@@ -29,6 +29,11 @@ function makeId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
 
+function getLocalDateTimeString(date = new Date()) {
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
 function addTodo(text, reminderAt) {
   const trimmed = text.trim();
   if (!trimmed) return;
@@ -212,7 +217,7 @@ addFormEl.addEventListener("submit", (e) => {
     : null;
   addTodo(todoInputEl.value, reminderValue);
   todoInputEl.value = "";
-  reminderInputEl.value = "";
+  reminderInputEl.value = getLocalDateTimeString();
   todoInputEl.focus();
 });
 
@@ -227,6 +232,8 @@ filtersEl.addEventListener("click", (e) => {
 });
 
 clearCompletedEl.addEventListener("click", clearCompleted);
+
+reminderInputEl.value = getLocalDateTimeString();
 
 render();
 checkReminders();
